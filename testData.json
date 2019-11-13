@@ -1,0 +1,7 @@
+{
+    "current" : "Sunny",
+    "uv" : 2,
+    "precipitationchance" : 10,
+    "fivedayforcast" : ["sunny", "cloudy", "sunny", "rain", "partlycloudy"],
+    "airquality" : "good"
+}
