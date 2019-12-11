@@ -93,33 +93,43 @@ public:
 
 				}
 				
-			}else if(segments[0] == "cis164") {
-
+			}
+			else if (segments[0] == "cis164") {
+				string location = "";
 				string testId = (segments[0]);
 				out << "<script>var dashes = ['dash1', 'dash2', 'dash3', 'dash4'];</script>";
 				out << "<script>function addTile(){if(document.getElementById('inputText').value == ''){alert('ERROR: Name field blank');throw new Error('invalid input'); } if(dashes.includes(document.getElementById('inputText').value)){alert('ERROR: Name already exists');throw new Error('invalid input, dashboard already exists with that name');};  let inText = document.getElementById('inputText').value;  }</script>";
-				out << "<script>function changeDash(locationText){if(locationText == ''){alert('ERROR: Location field blank');throw new Error('invalid Location'); }}</script>";
-				out << "<script>function getUrl(){let inText = document.getElementById('inputText').value; return 'http://localhost:9090/cis164/'+inText;      }</script>";
-				string dashName = (segments[1]);
+				out << "<script>function changeDash(){var e = document.getElementById('selectDash');var dashText = e.options[e.selectedIndex].text;  return 'http://localhost:9090/cis164/'+dashText;}</script>";
+				out << "<script>function changeTile(tileText, tileNum){if(tileText == ''){alert('ERROR: Location field blank');throw new Error('invalid location'); }else{     var e = document.getElementById('tileSelect'+tileNum);var tileText = e.options[e.selectedIndex].text; document.getElementById('tile'+tileNum).innerHTML = tileText+' '+document.getElementById('tileText'+tileNum).value; getUrl(tileText+' '+document.getElementById('tileText'+tileNum).value); }}</script>";
+				out << "<script>function getUrl(inText){ return 'http://localhost:9090/cis164/'+inText;}</script>";
+				
+				
+				if (segments.size() == 2) {
+					location = (segments[1]);
+				}
+				else {
+					location = "";
+				}
 				out << "<style>.tile{display:flex;border-style:solid;width:10%;float:left; padding:100px;  margin:50px;margin-left:15%;margin-bottom:10px;} .top{text-align:center;}</style>";
 				out << "<body>";
-				out << "<h2 style = 'text-align:center;'> TEST " << dashName << "</h2>";
-				out << "<p class = 'top'>Select dashboard: <select><script>var len = dashes.length; var i = 0; while(len > 0){document.write('<option value = '+dashes[i]+'>'+dashes[i]+'</option>'); len=len-1; i++; };</script></select></p>";
-				out << "<p class = 'top'>New dashbaord: <input id = 'inputText' type = 'text'><button type = 'button' onclick = 'document.location.href = getUrl(); addTile()'>Add</button>";
-				out << "<div class='tile'>tile1</div>";
-				out << "<div class='tile'>tile2</div>";
+				out << "<h2 style = 'text-align:center;'> Dashboard " << location << "</h2>";
+				out << "<p class = 'top'>Select dashboard: <select id = 'selectDash' onmouseout = 'document.location.href = changeDash();'><script>var len = dashes.length; var i = 0; while(len > 0){document.write('<option value = '+dashes[i]+'>'+dashes[i]+'</option>'); len=len-1; i++; };</script></select></p>";
+				out << "<p class = 'top'>New dashbaord: <input id = 'inputText' type = 'text'><button type = 'button' onclick = 'document.location.href = getUrl(inputText.value); addTile()'>Add</button>";
+				out << "<div class='tile' id = 'tile1'>tile1</div>";
+				out << "<div class='tile' id = 'tile2'>tile2</div>";
 				out << "<div style = 'display:block;'>";
-				out << "<p style = 'margin-left:15%; float:left;'>Location: <input id = 'locationText1' type = 'text'> </p>";
-				out << "<p style = 'margin-left:27%; float:left;'>Location: <input id = 'locationText2' type = 'text'> </p>";
-				out << "<p style = 'margin-left:15%; float:left;'>View: <select onclick = 'changeDash(locationText1.value)'><option value = '1'>dash1</option><option value = '2'>dash2</option><option value = '3'>dash3</option><option value = '4'>dash4</option></select></p>";
-				out << "<p style = 'margin-left:37%; float:left;'>View: <select onclick = 'changeDash(locationText2.value)'><option value = '1'>dash1</option><option value = '2'>dash2</option><option value = '3'>dash3</option><option value = '4'>dash4</option></select></p>";
-				out << "<div class='tile'>tile3</div>";
-				out << "<div class='tile'>tile4</div>";
+
+				out << "<p style = 'margin-left:15%; float:left;'>Location: <input id = 'tileText1' type = 'text'> </p>";
+				out << "<p style = 'margin-left:27%; float:left;'>Location: <input id = 'tileText2' type = 'text'> </p>";
+				out << "<p style = 'margin-left:15%; float:left;'>View: <select id = 'tileSelect1' onclick = 'changeTile(tileText1.value, 1);'><option value = '1'>Tempurature</option><option value = '2'>High/Low</option><option value = '3'>Pressure</option><option value = '4'>Humidity</option><option value = '1'>5 Day</option></select></p>";
+				out << "<p style = 'margin-left:37%; float:left;'>View: <select id = 'tileSelect2'  onclick = 'changeTile(tileText2.value, 2)'><option value = '1'>Tempurature</option><option value = '2'>High/Low</option><option value = '3'>Pressure</option><option value = '4'>Humidity</option><option value = '1'>5 Day</option></select></p>";
+				out << "<div class='tile' id = 'tile3'>tile3</div>";
+				out << "<div class='tile' id = 'tile4'>tile4</div>";
 				out << "<div style = 'display:block;'>";
-				out << "<p style = 'margin-left:15%; float:left;'>Location: <input id = 'locationText3' type = 'text'> </p>";
-				out << "<p style = 'margin-left:27%; float:left;'>Location: <input id = 'locationText4' type = 'text'> </p>";
-				out << "<p style = 'margin-left:15%; float:left;'>View: <select onclick = 'changeDash(locationText3.value)'><option value = '1'>dash1</option><option value = '2'>dash2</option><option value = '3'>dash3</option><option value = '4'>dash4</option></select></p>";
-				out << "<p style = 'margin-left:37%; float:left;'>View: <select onclick = 'changeDash(locationText4.value)'><option value = '1'>dash1</option><option value = '2'>dash2</option><option value = '3'>dash3</option><option value = '4'>dash4</option></select></p>";
+				out << "<p style = 'margin-left:15%; float:left;'>Location: <input id = 'tileText3' type = 'text'> </p>";
+				out << "<p style = 'margin-left:27%; float:left;'>Location: <input id = 'tileText4' type = 'text'> </p>";
+				out << "<p style = 'margin-left:15%; float:left;'>View: <select id = 'tileSelect3'  onclick = 'changeTile(tileText3.value, 3)'><option value = '1'>Tempurature</option><option value = '2'>High/Low</option><option value = '3'>Pressure</option><option value = '4'>Humidity</option><option value = '1'>5 Day</option></select></p>";
+				out << "<p style = 'margin-left:37%; float:left;'>View: <select id = 'tileSelect4'  onclick = 'changeTile(tileText4.value, 4)'><option value = '1'>Tempurature</option><option value = '2'>High/Low</option><option value = '3'>Pressure</option><option value = '4'>Humidity</option><option value = '1'>5 Day</option></select></p>";
 			    
 				out << "</body>";
 
